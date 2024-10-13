@@ -1,16 +1,16 @@
 // import ballerina/time;
 import ballerina/http;
+import ballerina/io;
 import ballerina/sql;
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
-
 
 final mysql:Client userDbClient = check new (host = HOST, user = USER, password = PASSWORD, port = PORT,
     database = "UserDB", connectionPool = {maxOpenConnections: 3, minIdleConnections: 1}
 );
 
- service /api on new http:Listener(8083) {
-   @http:ResourceConfig {
+service /api on new http:Listener(8083) {
+    @http:ResourceConfig {
         cors: {
             allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
             allowMethods: ["GET", "POST", "PUT", "DELETE"],
@@ -33,7 +33,104 @@ final mysql:Client userDbClient = check new (host = HOST, user = USER, password 
         return recipes;
     }
 
+    @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
+        }
+    }
+    isolated resource function get uniquetags() returns string[]|error? {
+        string[] uniqueTags = [];
+        map<boolean> tagMap = {}; // Map to ensure uniqueness
 
+        // Use JSON functions for MySQL
+        stream<record {string tag;}, error?> resultStream = userDbClient->query(
+        `SELECT JSON_UNQUOTE(JSON_EXTRACT(tags, '$[*]')) AS tag FROM Recipes`
+        );
+
+        check from var row in resultStream
+            do {
+
+                // Use regex to find all tag elements
+                string[] tagArray = re `,`.split(row.tag);
+                foreach string tag in tagArray {
+
+                    if !tagMap.hasKey(tag) {
+                        uniqueTags.push(tag.toString());
+                        tagMap[tag] = true; // Track for uniqueness
+                    }
+                }
+            };
+
+        check resultStream.close();
+        return uniqueTags;
+    }
+
+    @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
+        }
+    }
+    isolated resource function get recipesbytag(string tag) returns Recipe[]|error? {
+    Recipe[] recipes = [];
+    io:println("working1");
+
+    // Use parameterized query syntax with placeholders
+    sql:ParameterizedQuery sqlQuery = `SELECT * FROM Recipes WHERE tags LIKE ${"%"+tag+"%"}`;
+
+    // Execute the query with the parameter
+    stream<Recipe, error?> resultStream = userDbClient->query(sqlQuery);
+
+    io:println("working2");
+
+    check from Recipe recipe in resultStream
+        do {
+            io:println(recipe.title);
+            recipes.push(recipe);
+        };
+
+    check resultStream.close();
+    return recipes;
+}
+    @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
+        }
+    }
+
+    // New resource function for searching recipes
+    isolated resource function get searchrecipes(string searchTerm) returns Recipe[]|error? {
+        Recipe[] recipes = [];
+        io:println("Searching recipes for term: ", searchTerm);
+
+        // Use a parameterized query to search for recipes
+        sql:ParameterizedQuery sqlQuery = `SELECT * FROM Recipes WHERE title LIKE ${"%"+searchTerm+"%"} OR description LIKE ${"%"+searchTerm+"%"}`;
+        
+        stream<Recipe, error?> resultStream = userDbClient->query(sqlQuery);
+
+        check from Recipe recipe in resultStream
+            do {
+                io:println("Found recipe: ", recipe.title);
+                recipes.push(recipe);
+            };
+
+        check resultStream.close();
+        return recipes;
+    }
 
 
     isolated resource function get users() returns User[]|error? {
@@ -94,14 +191,14 @@ final mysql:Client userDbClient = check new (host = HOST, user = USER, password 
         return count;
     }
 }
-    // isolated resource function get subordinates/[int id]() returns Employee[]|error? {
-    //     Employee[] employees = [];
-    //     stream<Employee, error?> resultStream = dbClient->query(`SELECT * FROM Employees WHERE manager_id = ${id}`);
-    //     check from Employee employee in resultStream
-    //         do {
-    //             employees.push(employee);
-    //         };
-    //     check resultStream.close();
-    //     return employees;
-    // }
+// isolated resource function get subordinates/[int id]() returns Employee[]|error? {
+//     Employee[] employees = [];
+//     stream<Employee, error?> resultStream = dbClient->query(`SELECT * FROM Employees WHERE manager_id = ${id}`);
+//     check from Employee employee in resultStream
+//         do {
+//             employees.push(employee);
+//         };
+//     check resultStream.close();
+//     return employees;
+// }
 
