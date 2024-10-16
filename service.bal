@@ -73,7 +73,7 @@ service /api on new http:Listener(8083) {
 
     @http:ResourceConfig {
         cors: {
-            allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
+            allowOrigins: ["http://localhost:8081","  https://fe31-2407-c00-c001-c892-dd89-2bb4-6f71-562a.ngrok-free.app "], // Change to your frontend URL
             allowMethods: ["GET", "POST", "PUT", "DELETE"],
             allowHeaders: ["Authorization", "Content-Type"],
             exposeHeaders: [],
@@ -104,7 +104,7 @@ service /api on new http:Listener(8083) {
 }
     @http:ResourceConfig {
         cors: {
-            allowOrigins: ["http://localhost:8081"], // Change to your frontend URL
+            allowOrigins: ["http://localhost:8081","https://fe31-2407-c00-c001-c892-dd89-2bb4-6f71-562a.ngrok-free.app"], // Change to your frontend URL
             allowMethods: ["GET", "POST", "PUT", "DELETE"],
             allowHeaders: ["Authorization", "Content-Type"],
             exposeHeaders: [],
@@ -146,41 +146,94 @@ service /api on new http:Listener(8083) {
         return users;
     }
 
-    isolated resource function get [int id]() returns User|error? {
-        User user = check userDbClient->queryRow(`SELECT * FROM Users WHERE user_id = ${id}`);
+        @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081","https://fe31-2407-c00-c001-c892-dd89-2bb4-6f71-562a.ngrok-free.app"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
+        }
+    }
+
+
+    isolated resource function get [string sub]() returns User|error? {
+        User user = check userDbClient->queryRow(`SELECT * FROM Users WHERE sub = ${sub}`);
         return user;
     }
 
-    isolated resource function post users(@http:Payload User user) returns string|int|error? {
-        sql:ExecutionResult result = check userDbClient->execute(`
-        INSERT INTO Users
-  (user_id, user_name,email, user_allergies, health_goals, favorited_recipes)     
-         VALUES
-                (${user.user_id}, ${user.user_name},${user.email}, ${user.user_allergies.toJsonString()}, ${user.health_goals.toJsonString()}, ${user.favorited_recipes.toJsonString()})
-              
-            `);
-        int|string? lastInsertId = result.lastInsertId;
-        if lastInsertId is int {
-            return lastInsertId;
-        } else {
-            return error("Unable to obtain last insert ID");
+    @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081","https://fe31-2407-c00-c001-c892-dd89-2bb4-6f71-562a.ngrok-free.app"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
         }
     }
 
-    isolated resource function put users(@http:Payload User user) returns int|error? {
-        sql:ExecutionResult result = check userDbClient->execute(`
-            UPDATE Users
-            SET user_name = ${user.user_name},email=${user.email}, user_allergies = ${user.user_allergies.toJsonString()},  favorited_recipes=${user.favorited_recipes.toJsonString()}
-             , health_goals = ${user.health_goals.toJsonString()}
-            WHERE user_id = ${user.user_id}
-        `);
+isolated resource function post users(@http:Payload User user) returns int|error? {
+    // Convert each field to JSON and ensure it’s valid or set it to NULL.
+    string? userAllergiesJson = user.user_allergies != () ? user.user_allergies.toJsonString() : sql:SET_NULL;
+    string? dietaryPreferencesJson = user.dietary_preferences != () ? user.dietary_preferences.toJsonString() : sql:SET_NULL;
+    string? healthGoalsJson = user.health_goals != () ? user.health_goals.toJsonString() : sql:SET_NULL;
+    string? currentIngredientsJson = user.current_ingredients != () ? user.current_ingredients.toJsonString() : sql:SET_NULL;
+    string? favoritedRecipesJson = user.favorited_recipes != () ? user.favorited_recipes.toJsonString() : sql:SET_NULL;
 
-        if result.affectedRowCount > 0 {
-            return result.affectedRowCount; // Return the number of rows updated
-        } else {
-            return error("No rows updated");
+    sql:ParameterizedQuery insertQuery = `INSERT INTO Users 
+        (user_name, email, sub, user_allergies, dietary_preferences, health_goals, current_ingredients, favorited_recipes)
+        VALUES 
+        (${user.user_name}, ${user.email}, ${user.sub}, 
+        ${userAllergiesJson ?: sql:SET_NULL}, 
+        ${dietaryPreferencesJson ?: sql:SET_NULL}, 
+        ${healthGoalsJson ?: sql:SET_NULL}, 
+        ${currentIngredientsJson ?: sql:SET_NULL}, 
+        ${favoritedRecipesJson ?: sql:SET_NULL})`;
+
+    sql:ExecutionResult result = check userDbClient->execute(insertQuery);
+    
+    int|string? lastInsertId = result.lastInsertId;
+    if lastInsertId is int {
+        return lastInsertId;
+    } else {
+        return error("Unable to obtain last insert ID");
+    }
+}
+
+    @http:ResourceConfig {
+        cors: {
+            allowOrigins: ["http://localhost:8081","https://fe31-2407-c00-c001-c892-dd89-2bb4-6f71-562a.ngrok-free.app"], // Change to your frontend URL
+            allowMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowHeaders: ["Authorization", "Content-Type"],
+            exposeHeaders: [],
+            allowCredentials: true,
+            maxAge: 3600
         }
     }
+
+
+isolated resource function put users(@http:Payload User user) returns int|error? {
+    sql:ExecutionResult result = check userDbClient->execute(`
+        UPDATE Users
+        SET user_name = ${user.user_name},
+            email = ${user.email},
+            sub = ${user.sub},
+            user_allergies = ${user.user_allergies.toJsonString()},
+            dietary_preferences = ${user.dietary_preferences.toJsonString()}, 
+            health_goals = ${user.health_goals.toJsonString()},
+            current_ingredients = ${user.current_ingredients.toJsonString()}, 
+            favorited_recipes = ${user.favorited_recipes.toJsonString()}
+        WHERE sub = ${user.sub}
+    `);
+
+    if result.affectedRowCount > 0 {
+        return result.affectedRowCount; // Return the number of rows updated
+    } else {
+        return error("No rows updated");
+    }
+}
 
     isolated resource function delete users/[int id]() returns int|error? {
         sql:ExecutionResult result = check userDbClient->execute(`DELETE FROM Users WHERE user_id = ${id}`);
