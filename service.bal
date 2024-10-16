@@ -35,7 +35,7 @@ service /api on new http:Listener(8083) {
 
   @http:ResourceConfig {
     cors: {
-        allowOrigins: ["http://192.168.43.52:8081", "http://10.240.244.148:8081", "exp://10.240.244.148:8081","https://4898-2407-c00-c001-c892-25a7-98b5-4d7c-b5a3.ngrok-free.app"], // Include your phone's IP
+        allowOrigins: ["http://localhost:8081", "http://10.240.244.148:8081", "exp://10.240.244.148:8081","https://4898-2407-c00-c001-c892-25a7-98b5-4d7c-b5a3.ngrok-free.app"], // Include your phone's IP
         allowMethods: ["GET", "POST", "PUT", "DELETE"],
         allowHeaders: ["Authorization", "Content-Type"],
         exposeHeaders: [],
