@@ -9,7 +9,7 @@ import re
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
-# CORS(app, resources={r"/recommend": {"origins": "http://192.168.1.138:8081"}})
+CORS(app, resources={r"/recommend": {"origins": "http://192.168.1.138:8081"}})
 
 # Load environment variables
 load_dotenv()
@@ -75,4 +75,4 @@ def recommend_recipes():
     return jsonify({"recommended_recipes": recommended_recipes})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='192.168.1.138', port=5000, debug=True)
