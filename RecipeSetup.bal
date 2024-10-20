@@ -132,7 +132,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 500, "protein": 30, "carbohydrates": 40, "fat": 25, "fiber": 4, "sugar": 3},
             "tags": ["Beef", "Tacos", "Dinner"],
             "allergies": ["Dairy", "Gluten"],
-            "images": [{"url": "https://example.com/image3.jpg", "description": "Beef tacos"}],
+            "images": [{"url": "https://www.isabeleats.com/wp-content/uploads/2023/03/ground-beef-tacos-9.jpg", "description": "Beef tacos"}],
             "ratings": {"average_rating": 4.6, "rating_count": 200},
             "date_added": "2024-10-12"
         },
@@ -160,7 +160,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 400, "protein": 12, "carbohydrates": 60, "fat": 15, "fiber": 3, "sugar": 1},
             "tags": ["Vegetarian", "Risotto", "Dinner"],
             "allergies": ["Dairy"],
-            "images": [{"url": "https://example.com/image4.jpg", "description": "Mushroom risotto"}],
+            "images": [{"url": "https://cocoandcamellia.com/wp-content/uploads/2021/05/Mushroom-Risotto-Recipe-4.jpg", "description": "Mushroom risotto"}],
             "ratings": {"average_rating": 4.8, "rating_count": 95},
             "date_added": "2024-10-12"
         },
@@ -187,7 +187,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 500, "protein": 30, "carbohydrates": 60, "fat": 15, "fiber": 5, "sugar": 3},
             "tags": ["Shrimp", "Fried Rice", "Dinner"],
             "allergies": ["Shellfish", "Soy"],
-            "images": [{"url": "https://example.com/image5.jpg", "description": "Shrimp fried rice"}],
+            "images": [{"url": "https://30minutesmeals.com/wp-content/uploads/2019/12/Shrimp-Fried-Rice-Recipe-3-640x949.jpg", "description": "Shrimp fried rice"}],
             "ratings": {"average_rating": 4.5, "rating_count": 120},
             "date_added": "2024-10-12"
         },
@@ -214,7 +214,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 300, "protein": 10, "carbohydrates": 40, "fat": 12, "fiber": 5, "sugar": 4},
             "tags": ["Vegetarian", "Salad", "Lunch"],
             "allergies": ["Dairy"],
-            "images": [{"url": "https://example.com/image6.jpg", "description": "Quinoa salad"}],
+            "images": [{"url": "https://www.chelseasmessyapron.com/wp-content/uploads/2017/05/Quinoa-Avocado-Power-Salad2.jpg", "description": "Quinoa salad"}],
             "ratings": {"average_rating": 4.9, "rating_count": 70},
             "date_added": "2024-10-12"
         },
@@ -241,7 +241,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 250, "protein": 4, "carbohydrates": 30, "fat": 12, "fiber": 5, "sugar": 6},
             "tags": ["Vegetarian", "Soup", "Appetizer"],
             "allergies": ["Dairy"],
-            "images": [{"url": "https://example.com/image7.jpg", "description": "Pumpkin soup"}],
+            "images": [{"url": "https://simple-veganista.com/wp-content/uploads/2019/10/healthy-vegan-pumpkin-soup-recipe-2.jpg", "description": "Pumpkin soup"}],
             "ratings": {"average_rating": 4.4, "rating_count": 60},
             "date_added": "2024-10-12"
         },
@@ -271,7 +271,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 200, "protein": 2, "carbohydrates": 30, "fat": 10, "fiber": 1, "sugar": 15},
             "tags": ["Dessert", "Cookies"],
             "allergies": ["Gluten", "Dairy"],
-            "images": [{"url": "https://example.com/image8.jpg", "description": "Chocolate chip cookies"}],
+            "images": [{"url": "https://www.recipetineats.com/tachyon/2017/06/Soft-Chocolate-Chip-Cookies-3.jpg", "description": "Chocolate chip cookies"}],
             "ratings": {"average_rating": 4.8, "rating_count": 300},
             "date_added": "2024-10-12"
         },
@@ -298,7 +298,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 300, "protein": 15, "carbohydrates": 45, "fat": 3, "fiber": 12, "sugar": 5},
             "tags": ["Vegetarian", "Soup", "Lunch"],
             "allergies": [],
-            "images": [{"url": "https://example.com/image9.jpg", "description": "Lentil soup"}],
+            "images": [{"url": "https://www.unicornsinthekitchen.com/wp-content/uploads/2021/09/Mediterranean-Lentil-Soup-5.1200px.jpg", "description": "Lentil soup"}],
             "ratings": {"average_rating": 4.5, "rating_count": 85},
             "date_added": "2024-10-12"
         },
@@ -324,7 +324,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 350, "protein": 40, "carbohydrates": 0, "fat": 20, "fiber": 0, "sugar": 0},
             "tags": ["Fish", "Grilled", "Dinner"],
             "allergies": ["Fish"],
-            "images": [{"url": "https://example.com/image10.jpg", "description": "Grilled salmon"}],
+            "images": [{"url": "https://www.thecookierookie.com/wp-content/uploads/2023/05/grilled-salmon-recipe-2.jpg", "description": "Grilled salmon"}],
             "ratings": {"average_rating": 4.7, "rating_count": 75},
             "date_added": "2024-10-12"
         },
@@ -350,7 +350,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 200, "protein": 5, "carbohydrates": 15, "fat": 15, "fiber": 3, "sugar": 2},
             "tags": ["Salad", "Appetizer"],
             "allergies": ["Dairy", "Gluten"],
-            "images": [{"url": "https://example.com/image11.jpg", "description": "Caesar salad"}],
+            "images": [{"url": "https://www.joyfulhealthyeats.com/wp-content/uploads/2022/04/Classic-Caesar-Salad-with-Homemade-Croutons-web-4.jpg", "description": "Caesar salad"}],
             "ratings": {"average_rating": 4.6, "rating_count": 90},
             "date_added": "2024-10-12"
         },
@@ -377,7 +377,7 @@ function createAndPopulateRecipesTable() returns error? {
             "nutrition": {"calories": 350, "protein": 12, "carbohydrates": 50, "fat": 10, "fiber": 7, "sugar": 5},
             "tags": ["Vegetarian", "Dinner"],
             "allergies": ["Dairy"],
-            "images": [{"url": "https://example.com/image12.jpg", "description": "Stuffed bell peppers"}],
+            "images": [{"url": "https://saltedmint.com/wp-content/uploads/2024/01/Easy-Stuffed-bell-peppers-with-rice-2.jpg", "description": "Stuffed bell peppers"}],
             "ratings": {"average_rating": 4.8, "rating_count": 110},
             "date_added": "2024-10-12"
         }
