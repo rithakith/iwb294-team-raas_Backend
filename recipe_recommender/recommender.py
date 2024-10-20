@@ -3,10 +3,13 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import re
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+# CORS(app, resources={r"/recommend": {"origins": "http://192.168.1.138:8081"}})
 
 # Load environment variables
 load_dotenv()
